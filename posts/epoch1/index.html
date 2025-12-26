@@ -130,7 +130,9 @@ b ──┘               ├─ (+) → c
 b = 3
 tmp = a * b = 6
 c   = tmp + b = 6 + 3 = 9
-</code></pre><hr><p><strong>Step 6: Backprop step by step</strong></p><ol><li>Backprop from c</li></ol><ul><li><code>c.grad = 1</code> (seed)</li><li><code>c</code> depends on <code>tmp</code> and <code>b</code></li><li>Local derivatives:</li></ul><pre tabindex=0><code>∂c/∂tmp = 1
+</code></pre><hr><p><strong>Step 6: Backprop step by step</strong></p><p>$$
+v.grad += \sum_{\text{children } c} \left( c.grad \cdot \frac{\partial c}{\partial v} \right)
+$$</p><ol><li>Backprop from c</li></ol><ul><li><code>c.grad = 1</code> (seed)</li><li><code>c</code> depends on <code>tmp</code> and <code>b</code></li><li>Local derivatives:</li></ul><pre tabindex=0><code>∂c/∂tmp = 1
 ∂c/∂b   = 1
 </code></pre><ul><li>Contribution to parents:</li></ul><pre tabindex=0><code>tmp.grad += c.grad * ∂c/∂tmp = 1 * 1 = 1
 b.grad   += c.grad * ∂c/∂b   = 1 * 1 = 1
@@ -142,4 +144,16 @@ b.grad += tmp.grad * ∂tmp/∂b = 1 + (1 * 2) = 3
 b.grad   = 3
 tmp.grad = 1
 c.grad   = 1
+</code></pre><hr><p><strong>Step 8: Try to change inputs to see the gradient changes</strong></p><p>in <code>c = a * b + b</code></p><p>example 1:</p><p>Forward pass:</p><pre tabindex=0><code>a: 2.0
+b: 3.0
+c: 9.0
+</code></pre><p>Backward pass (gradients):</p><pre tabindex=0><code>a.grad: 3.0
+b.grad: 3.0
+c.grad: 1.0
+</code></pre><p>example 2:</p><p>Forward pass:</p><pre tabindex=0><code>a: 2.0001
+b: 3.01
+c: 9.030301
+</code></pre><p>Backward pass (gradients):</p><pre tabindex=0><code>a.grad: 3.01
+b.grad: 3.0001
+c.grad: 1.0
 </code></pre><p>Next epoch will be about building a tiny neural network.</p><h2 id=resources>Resources</h2><h3 id=micrograd---a-tiny-autograd-engine>Micrograd - A Tiny Autograd Engine</h3><p><a href=https://github.com/karpathy/micrograd>GitHub: karpathy/micrograd</a></p><p>A tiny scalar-valued autograd engine and a neural net library on top of it with PyTorch-like API, created by Andrej Karpathy.</p><h3 id=the-spelled-out-intro-to-neural-networks-and-backpropagation-building-micrograd>The spelled-out intro to neural networks and backpropagation: building micrograd</h3><iframe width=560 height=315 src=https://www.youtube.com/embed/VMj-3S1tku0 title="YouTube video player" frameborder=0 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy=strict-origin-when-cross-origin allowfullscreen></iframe><div class=time><time datetime=2025-12-25>2025-12-25&nbsp;</time></div><div class=comments></div><div class=terminal-nav><div class=back-nav><a href=../ class=back-link>../</a></div></div></main><footer></footer></body></html>
