@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Redirecting...</title>
+    <script>
+        // Only redirect on GitHub Pages from root path
+        if ((window.location.hostname === 'gnosis.github.io' || window.location.hostname.endsWith('.github.io')) 
+            && (window.location.pathname === '/' || window.location.pathname === '')) {
+            window.location.replace('/memo/');
+        }
+    </script>
+</head>
+<body>
+    <script>
+        // Only show message if redirecting
+        if ((window.location.hostname === 'gnosis.github.io' || window.location.hostname.endsWith('.github.io')) 
+            && (window.location.pathname === '/' || window.location.pathname === '')) {
+            document.write('<p>Redirecting to <a href="/memo/">/memo/</a>...</p>');
+        }
+    </script>
+</body>
+</html>
