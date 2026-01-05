@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo on Memo Box</title><link>https://auroramonet.github.io/memo/</link><description>Recent content in Memo on Memo Box</description><generator>Hugo</generator><language>en-US</language><lastBuildDate>Sun, 04 Jan 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://auroramonet.github.io/memo/index.xml" rel="self" type="application/rss+xml"/><item><title>Epoch 5: Makemore, Part 2</title><link>https://auroramonet.github.io/memo/posts/epoch5/</link><pubDate>Sun, 04 Jan 2026 00:00:00 +0000</pubDate><guid>https://auroramonet.github.io/memo/posts/epoch5/</guid><description>&lt;h2 id="intro"&gt;Intro&lt;/h2&gt;
 &lt;p&gt;Hi, I&amp;rsquo;m Mon, this is Epoch 5, Makemore p2&lt;/p&gt;
 &lt;h2 class="no-counter" id="content-bigram-part-4-better-efficiency"&gt;Content: Bigram Part 4: Better efficiency&lt;/h2&gt;
-&lt;p&gt;As you may noticed in this part:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;dist_all = N[ix].float() &lt;br&gt;
-dist_all /= dist_all.sum()&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;For every character of a name, we calculate the prob. dist. every time which is inefficient. Now we decide to compute prob. dist. at once, for the whole tensor
-&lt;br&gt;
-Before we begin to implement that, we need to know some concepts.
-&lt;br&gt;&lt;br&gt;&lt;/p&gt;</description></item><item><title>Epoch 4: Makemore, Part 1</title><link>https://auroramonet.github.io/memo/posts/epoch4/</link><pubDate>Thu, 01 Jan 2026 00:00:00 +0000</pubDate><guid>https://auroramonet.github.io/memo/posts/epoch4/</guid><description>&lt;h2 id="intro"&gt;Intro&lt;/h2&gt;
+&lt;p&gt;Just a concept to know, before we begin:&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Broadcasting&lt;/strong&gt;: &lt;br&gt;
+Broadcasting is when PyTorch automatically &amp;ldquo;stretches&amp;rdquo; a smaller tensor to match a larger one so element-wise operations can work without copying data. &lt;br&gt; &lt;br&gt;
+e.g.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;A &lt;span style="color:#f92672"&gt;=&lt;/span&gt; torch&lt;span style="color:#f92672"&gt;.&lt;/span&gt;tensor([[&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;2&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;3&lt;/span&gt;], [&lt;span style="color:#ae81ff"&gt;4&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;5&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;6&lt;/span&gt;]]) 
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# A.shape: (2, 3)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;b &lt;span style="color:#f92672"&gt;=&lt;/span&gt; torch&lt;span style="color:#f92672"&gt;.&lt;/span&gt;tensor([&lt;span style="color:#ae81ff"&gt;10&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;20&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;30&lt;/span&gt;]) 
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# b.shape: (3,)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;A &lt;span style="color:#f92672"&gt;+&lt;/span&gt; b
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt; &lt;br&gt;
+e.g. in here it streches (reuse, not duplicate) [10, 20, 30] internally&lt;br&gt; &lt;br&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;Rule 1&lt;/strong&gt;&lt;/em&gt;: Dimension sizes must be equal, one of them is &amp;ldquo;1&amp;rdquo; or one of them does not exist.
+&lt;br&gt;&lt;br&gt;
+&lt;em&gt;&lt;strong&gt;Rule 2&lt;/strong&gt;&lt;/em&gt;: For streching the smaller vector, bring them to the right (right-aligned) &lt;br&gt;&lt;br&gt;
+e.g. [27,27,27] + [27,27] &lt;br&gt;
+[27,27] -&amp;gt; [ ,27,27] -&amp;gt; [1,27,27] -&amp;gt; [27,27,27] &lt;br&gt;&lt;/p&gt;</description></item><item><title>Epoch 4: Makemore, Part 1</title><link>https://auroramonet.github.io/memo/posts/epoch4/</link><pubDate>Thu, 01 Jan 2026 00:00:00 +0000</pubDate><guid>https://auroramonet.github.io/memo/posts/epoch4/</guid><description>&lt;h2 id="intro"&gt;Intro&lt;/h2&gt;
 &lt;p&gt;Hi, I&amp;rsquo;m Mon, and here is Epoch 4, Makemore Part 1.&lt;br&gt;&lt;br&gt; Makemore is a character-level language model, where each character is a token.
 The model is trained on a dataset of names and learns to predict the next token (character), allowing it to generate new names that sound realistic.
 &lt;br&gt;&lt;br&gt;&lt;/p&gt;
