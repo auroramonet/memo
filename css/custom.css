@@ -157,3 +157,77 @@ h2 {
 h2:first-of-type {
   margin-top: 2rem !important;
 }
+
+/* Make images look clickable */
+main img {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+main img:hover {
+  opacity: 0.9;
+}
+
+/* Style for images wrapped in lightbox links */
+main a[data-glightbox] {
+  display: inline-block;
+  text-decoration: none;
+}
+
+/* Hide code blocks with python-copy language - JavaScript handles this dynamically */
+
+/* Style for copy button container */
+.code-copy-container {
+  position: relative;
+  margin: 16px 0;
+}
+
+.code-copy-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #50fa7b;
+  color: #2d3748;
+  border: 1px solid #50fa7b;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.code-copy-button:hover {
+  background: #45e06a;
+  border-color: #45e06a;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(80, 250, 123, 0.3);
+}
+
+.code-copy-button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(80, 250, 123, 0.2);
+}
+
+.code-copy-button.copied {
+  background: #bd93f9;
+  border-color: #bd93f9;
+  color: #2d3748;
+}
+
+.code-copy-button.copied:hover {
+  background: #a78bf0;
+  border-color: #a78bf0;
+}
+
+.code-copy-button::before {
+  content: "📋";
+  font-size: 16px;
+}
+
+.code-copy-button.copied::before {
+  content: "✓";
+  font-size: 16px;
+}
