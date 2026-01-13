@@ -11,7 +11,7 @@ itos = {i:s for s,i in stoi.items()}
 vocab_size = len(itos)
 print(itos)
 print(vocab_size)
-</code></pre><br>2. dataset:<br>![epoch8-dataset](https://auroramonet.github.io/memo/img/epoch8-dataset.png)<pre tabindex=0><code class=language-python-copy data-lang=python-copy># build the dataset
+</code></pre><br>2. dataset:<br><p><img src=https://auroramonet.github.io/memo/img/epoch8-dataset.png alt=epoch8-dataset></p><pre tabindex=0><code class=language-python-copy data-lang=python-copy># build the dataset
 block_size = 3 #context length
 
 def build_dataset(words):  
@@ -39,7 +39,7 @@ n2 = int(0.9*len(words))
 Xtr,  Ytr  = build_dataset(words[:n1])     # 80%
 Xdev, Ydev = build_dataset(words[n1:n2])   # 10%
 Xte,  Yte  = build_dataset(words[n2:])     # 10%
-</code></pre><br>3. init:<br>![epoch8-init](https://auroramonet.github.io/memo/img/epoch8-init.png)<pre tabindex=0><code class=language-python-copy data-lang=python-copy># MLP init
+</code></pre><br>3. init:<br><p><img src=https://auroramonet.github.io/memo/img/epoch8-init.png alt=epoch8-init></p><pre tabindex=0><code class=language-python-copy data-lang=python-copy># MLP init
 
 n_embd = 10 # dim of character embedding
 n_hidden = 200 # the number of neurons in the hidden layer of the MLP
